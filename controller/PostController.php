@@ -10,41 +10,20 @@ class PostController{
     }
     
     public function actionFull($id){
-       
-        $fullPost= Post::getOnePostById($id);
-        if(!User::isGuest()){
-             $author = User::checkLogged();
-             $parent=0;
-             $text=$_POST['text'];
-             Comments::createComment($author, $text, $id, $parent); 
-             //header("location:/post/$id");
-                         
-        }        
-        $comment= Comments::showComment($id);
-        $tree= Comments::getTree($comment);
-        $showComments= Comments::showCom($tree);
-        
-        
+       $fullPost= Post::getOnePostById($id);
+     
+             
        require_once(ROOT.'/views/post/full.php');           
        return true;  
     }
     
-    public function actionReply($parent,$post_id){
-      
-        if(!User::isGuest()){
-             $author = User::checkLogged();
-             $text=$_POST['text'];
-             Comments::createComment($author, $text, $post_id, $parent); 
-             
-       require_once(ROOT.'/views/post/full.php');           
-       return true; 
-        
-        
+    public function actionComments($id){
+       $showCommnt = Comments::showComment($id);
+       echo json_encode($showCommnt);
+       return TRUE;
     }
     
-   
-
+    
+    
     
 }
-
-        }

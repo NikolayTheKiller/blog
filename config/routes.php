@@ -17,16 +17,13 @@ return array(
     'adminpost/delete/([0-9]+)'=>'adminpost/delete/$1',
     'adminpost/update/([0-9]+)'=>'adminpost/update/$1',
     'adminpost/extra/([0-9]+)'=>'adminpost/extra/$1',
-    'adminpost/comment/([0-9]+)'=>'adminpost/comment/$1',
-    'delete/comment/([0-9]+)'=>'adminpost/deletecomment/$1',
    
     'admin' => 'admin/index',
     'category/([0-9]+)/page-([0-9]+)' => 'post/index/$1/$2',    
     'category/([0-9]+)' => 'post/index/$1',
-    'category' => 'category/category',
-    'post/reply/([0-9]+)/([0-9]+)'=>'post/reply/$1/$2',
+    'category' => 'category/category',  
     'post/([0-9]+)'=>'post/full/$1',
- 
+    'showcomm/([0-9]+)'=>'post/comments/$1',
        
  
     

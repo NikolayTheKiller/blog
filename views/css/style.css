@@ -134,20 +134,8 @@ h1#logo a { display: block; height: 56px; background: url(images/logo.gif) no-re
     color:#fff;
 }
 
-#comm{
-    border: 2px solid black;
-    padding: 5px;
-    margin: 20px;
-    background: lightgrey;
-    border-radius: 8px;
-}
 
-#form{
-    display: none;
-    border: 2px solid black;
-    padding: 20px;
-    margin: 20px;
-    background: lightgrey;
-    border-radius: 8px;
-    
-}
+
+
+
+

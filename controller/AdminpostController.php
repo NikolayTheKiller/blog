@@ -137,19 +137,4 @@ class AdminpostController extends AdminBase{
     }
     
 }
-
-public function actionComment($post){
-    if(self::checkAdmin()){
-        $comments= Comments::showComment($post);
-               
-            
-    }
-    require_once ROOT.'/views/admin/adm_comments.php';
-    return TRUE; 
-}
-
-public function actionDeletecomment($id){
-    Comments::deleteComment($id);
-    header('location:/adminpost/index');
-}
 }

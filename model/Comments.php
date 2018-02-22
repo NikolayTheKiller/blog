@@ -10,11 +10,17 @@ class Comments {
         $result->bindParam(':text', $text, PDO::PARAM_STR); 
         $result->bindParam(':post', $post, PDO::PARAM_INT); 
         $result->bindParam(':parent', $parent, PDO::PARAM_INT); 
-        return $result->execute();
+        $result->execute();
+        return array(
+             'author'=>$author,
+            'text'=>$text,
+            'post'=>$post,
+            'parent'=>$parent
+        );
             
     }
     
-    public static function showComment($post){
+      public static function showComment($post){
         $db= Db::getConnection();
         $sql='SELECT * FROM comments WHERE post_id=:post ORDER BY pub_date';
         $result = $db->prepare($sql);
@@ -22,7 +28,7 @@ class Comments {
         $result->execute();
         $comment = array();
         while ($row=$result->fetch()){
-            $comment[$row['comment_id']] = $row;
+            $comment[] = $row;
         }
         return $comment;
         
@@ -41,29 +47,9 @@ class Comments {
       return $tree;
 }
 
- public static function tplMenu($tree){
-        $id= $tree['author_id'];
-        $user= User::getUserById($id);
-	$menu = '<li id="comm">'.$tree['text'].'<br>'. $tree['pub_date'].'  '.$user['name'].  
-		'<br><input type="button" class="reply" onclick="reply('.$tree['comment_id'].",".$tree['post_id'].')" value="Ответить">';	
-		if(isset($tree['childs'])){
-                    $menu.='<i><ul>'.self::showCom($tree['childs']) .'</ul></i>';
-		}
-	$menu .= '</li>';
-	
-	return $menu;
-}
+ 
 
- public static function showCom($tree){
-	//$string = '';
-        
-	foreach($tree as $item){
-               
-		$string .= self::tplMenu($item);
-	}
-        //$string= json_encode($string);
-	return $string;
-}
+
 
  public static function replyComment($author,$text,$post,$parent){
         $db= Db::getConnection();

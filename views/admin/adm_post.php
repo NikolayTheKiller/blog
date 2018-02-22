@@ -15,7 +15,6 @@
     <td><a href="update/<?php echo $onePost['id']; ?>">редактировать статью</a></td>
     <td><a href="delete/<?php echo $onePost['id']; ?>" style="margin-left: 20px">удалить статью</a></td>
     <td><a href="extra/<?php echo $onePost['id']; ?>" style="margin-left: 20px">добавить категорию</a></td>
-    <td><a href="comment/<?php echo $onePost['id']; ?>" style="margin-left: 20px">управление комментариями</a></td>
     <?php endforeach; ?>
    
 </tr>
