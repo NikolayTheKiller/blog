@@ -21,10 +21,11 @@ return array(
     'admin' => 'admin/index',
     'category/([0-9]+)/page-([0-9]+)' => 'post/index/$1/$2',    
     'category/([0-9]+)' => 'post/index/$1',
-    'category' => 'category/category',  
+    'category' => 'category/category',    
     'post/([0-9]+)'=>'post/full/$1',
     'showcomm/([0-9]+)'=>'post/comments/$1',
-       
+    'newcomm/([0-9]+)'=>'post/create/$1',
+     'preply/([0-9]+)'=>'post/reply/$1',
  
     
     ''=>'site/index'

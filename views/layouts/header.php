@@ -8,11 +8,13 @@
 	<!--[if IE 6]>
 		<link rel="stylesheet" href="/views/css/ie6.css" type="text/css" media="all" />
 		<script src="/views/js/png-fix.js" type="text/javascript"></script>
+ <script src="/views/js/jquery-3.2.1.js" type="text/javascript"></script>
 	<![endif]-->
 	<script src="/views/js/jquery-1.4.2.js" type="text/javascript"></script>
 	<script src="/views/js/jquery.jcarousel.js" type="text/javascript"></script>
 	<script src="/views/js/js-func.js" type="text/javascript"></script>
-        <script src="/views/js/accordion.js" type="text/javascript"></script>
+        
+        <script src="/views/js/popup.js" type="text/javascript"></script>
 </head>
 <body>
 <!-- Header -->

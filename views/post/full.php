@@ -7,35 +7,89 @@
 <?php if($i['path_t_pict']==TRUE):?>
 <img src="/<?php echo $i['path_t_pict']; ?>" style="margin-left: 25px">
 <?php endif; ?>
+<input type="hidden" id="p_id" value="<?php echo $i['id']; ?>" >
 <?php endforeach; ?>
-
 <br>
 <a href="/category/" style="margin-left: 25px">назад к категориям</a>
 <ul style="margin-left: 40px; margin-bottom: 40px" class="comm"></ul>
+<!-- ДОБАВИТЬ НОВЫЙ КОММЕНТАРИЙ (НЕ ОТВЕТ НА КОММЕНТ)-->
+ <div id="make_comment">
+    <h3>Оставить комментарий</h3>
+    <form action="" method="post">
+        <input type="text" name="text" id="newcom" style="margin-left: 20px">
+        <input type="button" value="сохранить" name="submit" onclick="newcomm(ident)">
+    </form>
+ </div>
+
+<!-- ФОРМА ОТВЕТА НА КОММЕНТАРИИ  -->
+<div>
+  <form action="" method="post" class="form" style="display: none">
+        <h3 style="color: red">Ответить на комментарий</h3>
+        <input type="hidden" name="id_comment" id="id_comment" value="">
+        <textarea name="text" rows="5" cols="50" id="text"></textarea><br>        
+        <button onclick="replycomment()">сохранить</button>
+  </form>
+</div>
+<!-- JS -->
 <script>
  $(document).ready(function(){});
-
- $.post('/showcomm/119',{},function(data){
+    var ident = $('#p_id').val();// id поста (не комментария)
+    showcomments(ident);//вызов метода -показ всех комментариев
+    //МЕТОД ДЛЯ ВЫВОДА ВСЕХ КОММЕНТАРИЕВ
+    function showcomments(ident){
+    $.post('/showcomm/'+ident,{},function(data){
     var res = JSON.parse(data);
     for(var i=0; i < res.length; i++){
-        if(res[i]['parent_id']==0){
-        $('#comments').append('<li id="'+res[i]['comment_id']+'" >'+res[i]['text']+'</li>');}
-        if(res[i]['parent_id']>0 ){
-              
-                 $('#'+res[i]['parent_id']+'').append('<li id="'+res[i]['comment_id']+'">--------'+res[i]['text']+'</li>');
-             
-        }
+    if(res[i]['parent_id']==0){
+    $('#comments').append('<li id="'+res[i]['comment_id']+'" >'+res[i]['text']+'<br><button class="callpop" onclick="reply('+res[i]['comment_id']+","+res[i]['post_id']+')">Ответить</button></li>');}
+    if(res[i]['parent_id']>0 ){     
+    $('#'+res[i]['parent_id']+'').append('<li id="'+res[i]['comment_id']+'">--------'+res[i]['text']+'<br><button onclick="reply('+res[i]['comment_id']+","+res[i]['post_id']+')">Ответить</button></li>');
+    }}    
+ });};
+  
+  //ДОБАВИТЬ НОВЫЙ КОММЕНТ (НЕ ОТВЕТИТЬ )
+ function newcomm(ident){
+    $.post('/newcomm/'+ident,{text:$('#newcom').val()},function(data){
+    //вытащить последний id в таблице и аппендоm вставить в li
+    var res = JSON.parse(data);
+    $('#comments').append('<li id="'+res[0]['comment_id']+'" >'+res[0]['text']+'<br><button onclick="reply('+res[0]['comment_id']+","+res[0]['post_id']+')">Ответить</button></li>');
+    $("#newcom").val('');}
+         );};
+    //ВЫЗОВ ПОП-АП ОКНА С ФОРМОЙ ДЛЯ ОТВЕТА НА КОММЕНТ (Ф-ция отправки ответа ниже)
+  function reply(c_id,post_id){
+    $('#id_comment').val(c_id);
+        var pop = $('.form').bPopup({            
+        speed: 650,
+        transition: 'slideIn',
+        transitionClose: 'slideBack'
+        });        
+    };
+    // ОТПРАВКА ОТВЕТА НА КОММЕНТАРИЙ - ВЫЗЫВАЕТСЯ ПРИ НАЖАТИИ НА КНОПКУ В ФОРМЕ (onclick=())
+    //только эта ф-ция перезагружает страницу
+    function replycomment(){
+        var comm = $('#id_comment').val();
+        alert(comm);
+        $.post('/preply/'+ident,{text:$('#text').val(),parent:comm},function(data){
+        var res = JSON.parse(data);           
+        $('#'+comm+'').append('<li id="'+res[0]['comment_id']+'">--------'+res[0]['text']+'<br><button onclick="reply('+res[0]['comment_id']+","+res[0]['post_id']+')">Ответить</button></li>');
+        $("#text").val('');$("#id_comment").val('');
+    });        
     }
-    console.log(res[0]['text']);
-     
- });
- 
+        
+        
+   
+   
+  
+   
+    
+
 
 
 </script>
-<div >
-<ul id="comments">
-  
-</ul>
+<!--КОНЕЦ JS -->
+<!-- СЮДА СКРИПТ ЗАКИДЫВАЕТ КОММЕНТАРИИ -->
+<div class="showComm">
+    <ul id="comments">  
+    </ul>
 </div>
 <?php include ROOT.'/views/layouts/footer.php'; ?>

@@ -11,7 +11,12 @@ class PostController{
     
     public function actionFull($id){
        $fullPost= Post::getOnePostById($id);
-     
+      /* if(!User::isGuest()){
+             $author = User::checkLogged();
+             $parent=0;
+            $text=$_POST['text'];
+            Comments::createComment($author, $text, $id, $parent); 
+       }*/     
              
        require_once(ROOT.'/views/post/full.php');           
        return true;  
@@ -23,7 +28,34 @@ class PostController{
        return TRUE;
     }
     
+     public function actionCreate($post_id){
+      
+        if(!User::isGuest()){
+             $author = User::checkLogged();
+             $text=$_POST['text'];
+             $parent = 0;
+            Comments::createComment($author, $text, $post_id, $parent); 
+            $return = Comments::returnLastInsertComment($post_id);
+            echo json_encode($return);
+            }  
+
+            return true;
+        }
     
-    
+        public function actionReply($post_id){
+            if(!User::isGuest()){
+             $author = User::checkLogged();
+             $text=$_POST['text'];
+             $parent=$_POST['parent'];
+             Comments::createComment($author, $text, $post_id, $parent); 
+            $return = Comments::returnLastInsertComment($post_id);
+            json_encode($return);
+            }  
+
+            return true;
+            
+            
+            
+        }
     
 }
