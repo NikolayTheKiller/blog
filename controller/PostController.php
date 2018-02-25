@@ -48,14 +48,18 @@ class PostController{
              $text=$_POST['text'];
              $parent=$_POST['parent'];
              Comments::createComment($author, $text, $post_id, $parent); 
-            $return = Comments::returnLastInsertComment($post_id);
-            json_encode($return);
+             $return = Comments::returnLastInsertComment($post_id);
+             echo json_encode($return);
             }  
 
-            return true;
-            
-            
+            return true;           
             
         }
     
+        
+        public function actionDelete(){
+            $comm_id=$_POST['comm'];
+            Comments::deleteComment($comm_id);
+            return TRUE;
+        }
 }

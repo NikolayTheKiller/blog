@@ -115,4 +115,52 @@ class User {
        return $result->execute();
     }
     
+    public static function admShowAllUsers(){
+        $db= Db::getConnection();
+        $sql='SELECT * FROM user';
+        $result=$db->prepare($sql);
+        $result->setFetchMode(PDO::FETCH_ASSOC);
+        $result->execute();
+        $users = array();
+        while ($row=$result->fetch()){
+            $users[]=$row;
+        }
+        return $users;
+    }
+    
+    public static function banUser($id){
+       $db= Db::getConnection();
+       $sql = "UPDATE user SET role = 'ban' WHERE id = :id";
+       $result = $db->prepare($sql);
+       $result->bindParam(':id', $id, PDO::PARAM_INT);
+       return $result->execute();
+        
+    }
+    
+    
+     public static function DebanUser($id){
+       $db= Db::getConnection();
+       $sql = "UPDATE user SET role = '' WHERE id = :id";
+       $result = $db->prepare($sql);
+       $result->bindParam(':id', $id, PDO::PARAM_INT);
+       return $result->execute();
+        
+    }
+     
+    
+    public static function checkUserStatus($email){
+        $db= Db::getConnection();
+        $sql='SELECT role FROM user WHERE email = :email';
+        $result=$db->prepare($sql);
+        $result->bindParam(':email', $email, PDO::PARAM_STR);
+        $result->execute();
+        $status=$result->fetch();
+        if($status['role']=='ban'){
+        return TRUE;
+        } 
+        return FALSE;  
+        
+    }
+    
+    
 }

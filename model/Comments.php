@@ -17,7 +17,7 @@ class Comments {
     
     public static function returnLastInsertComment($post){
         $db= Db::getConnection();
-         $sql='SELECT * FROM comments WHERE post_id=:post ORDER BY comment_id DESC LIMIT 1';
+         $sql='SELECT * FROM comments C LEFT JOIN user U ON C.author_id = U.id WHERE post_id=:post ORDER BY comment_id DESC LIMIT 1';
         $result = $db->prepare($sql);
         $result->bindParam(':post', $post, PDO::PARAM_INT); 
         $result->execute();
@@ -63,7 +63,20 @@ class Comments {
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute(); 
  }
-       
+      
+ public static function showAllComments(){
+        $db= Db::getConnection();
+        $sql='SELECT * FROM comments C LEFT JOIN user U ON C.author_id=U.id ORDER BY pub_date';
+        $result = $db->prepare($sql);
+        $result->execute();
+        $comment = array();
+        while ($row=$result->fetch()){
+            $comment[] = $row;
+        }
+        return $comment;
+        
+    }
+     
   
  
 }

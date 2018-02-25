@@ -5,6 +5,10 @@
 <br><br>
 <a href="/adminpost/add" style="border: 3px solid red; padding: 5px;">Создать новую статью</a>
 <br><br>
+<a href="/adminuser" style="border: 3px solid red; padding: 5px;">Управление пользователями</a>
+<br><br>
+<a href="/admincomment" style="border: 3px solid red; padding: 5px;">Управление комментариями</a>
+<br><br>
 <p><strong>Добавить фото в слайдер:</strong></p>
 <form method="post" enctype="multipart/form-data">
     <input type="file" name="slider">

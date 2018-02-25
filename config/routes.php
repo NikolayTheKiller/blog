@@ -17,6 +17,13 @@ return array(
     'adminpost/delete/([0-9]+)'=>'adminpost/delete/$1',
     'adminpost/update/([0-9]+)'=>'adminpost/update/$1',
     'adminpost/extra/([0-9]+)'=>'adminpost/extra/$1',
+    'adminuser'=>'adminuser/index',
+    'admincomment'=>'admincomment/index',
+    'deban/([0-9]+)'=>'adminuser/deban/$1',
+    'ban/([0-9]+)'=>'adminuser/ban/$1',
+    'delete/comment/([0-9]+)'=>'admincomment/delete/$1',
+    'crushcomm'=>'post/delete',
+    
    
     'admin' => 'admin/index',
     'category/([0-9]+)/page-([0-9]+)' => 'post/index/$1/$2',    

@@ -22,12 +22,12 @@
  </div>
 
 <!-- ФОРМА ОТВЕТА НА КОММЕНТАРИИ  -->
-<div>
+<div id="hideform">
   <form action="" method="post" class="form" style="display: none">
         <h3 style="color: red">Ответить на комментарий</h3>
-        <input type="hidden" name="id_comment" id="id_comment" value="">
-        <textarea name="text" rows="5" cols="50" id="text"></textarea><br>        
-        <button onclick="replycomment()">сохранить</button>
+            <input type="hidden" name="id_comment" id="id_comment" value="" class="reset">
+            <textarea name="text" rows="5" cols="50" id="text" class="reset"></textarea><br> 
+            <input type="button" name="submit" value="сохранить"  onclick="replycomment()">
   </form>
 </div>
 <!-- JS -->
@@ -41,9 +41,11 @@
     var res = JSON.parse(data);
     for(var i=0; i < res.length; i++){
     if(res[i]['parent_id']==0){
-    $('#comments').append('<li id="'+res[i]['comment_id']+'" >'+res[i]['text']+'<br><button class="callpop" onclick="reply('+res[i]['comment_id']+","+res[i]['post_id']+')">Ответить</button></li>');}
+    $('#comments').append('<li id="'+res[i]['comment_id']+'" >'+res[i]['text']+'<br><input type="button" value="Ответить" class="send" onclick="reply('+res[i]['comment_id']+","+res[i]['post_id']+')">\n\
+<input type="button" value="Удалить" class="delete" onclick="deletec('+res[i]['comment_id']+')"></li>');}
     if(res[i]['parent_id']>0 ){     
-    $('#'+res[i]['parent_id']+'').append('<li id="'+res[i]['comment_id']+'">--------'+res[i]['text']+'<br><button onclick="reply('+res[i]['comment_id']+","+res[i]['post_id']+')">Ответить</button></li>');
+    $('#'+res[i]['parent_id']+'').append('<li id="'+res[i]['comment_id']+'">--------'+res[i]['text']+'<br><input type="button" value="Ответить" class="send" onclick="reply('+res[i]['comment_id']+","+res[i]['post_id']+')">\n\
+<input type="button" value="Удалить" class="delete" onclick="deletec('+res[i]['comment_id']+')"></li>');
     }}    
  });};
   
@@ -52,31 +54,40 @@
     $.post('/newcomm/'+ident,{text:$('#newcom').val()},function(data){
     //вытащить последний id в таблице и аппендоm вставить в li
     var res = JSON.parse(data);
-    $('#comments').append('<li id="'+res[0]['comment_id']+'" >'+res[0]['text']+'<br><button onclick="reply('+res[0]['comment_id']+","+res[0]['post_id']+')">Ответить</button></li>');
-    $("#newcom").val('');}
+    if(res[0]['role']=='ban'){location="/user/logout";}else{
+    $('#comments').append('<li id="'+res[0]['comment_id']+'" >'+res[0]['text']+'<br><input type="button" value="Ответить" class="send" onclick="reply('+res[0]['comment_id']+","+res[0]['post_id']+')">\n\
+<br><input type="button" value="Удалить" class="delete" onclick="deletec('+res[0]['comment_id']+')"></li>');
+    $("#newcom").val('');}}
          );};
     //ВЫЗОВ ПОП-АП ОКНА С ФОРМОЙ ДЛЯ ОТВЕТА НА КОММЕНТ (Ф-ция отправки ответа ниже)
+  var pop='';
   function reply(c_id,post_id){
     $('#id_comment').val(c_id);
-        var pop = $('.form').bPopup({            
+        pop = $('.form').bPopup({            
         speed: 650,
         transition: 'slideIn',
-        transitionClose: 'slideBack'
-        });        
+        transitionClose: 'slideBack'      
+        }); 
     };
     // ОТПРАВКА ОТВЕТА НА КОММЕНТАРИЙ - ВЫЗЫВАЕТСЯ ПРИ НАЖАТИИ НА КНОПКУ В ФОРМЕ (onclick=())
     //только эта ф-ция перезагружает страницу
     function replycomment(){
+       
         var comm = $('#id_comment').val();
-        alert(comm);
         $.post('/preply/'+ident,{text:$('#text').val(),parent:comm},function(data){
-        var res = JSON.parse(data);           
-        $('#'+comm+'').append('<li id="'+res[0]['comment_id']+'">--------'+res[0]['text']+'<br><button onclick="reply('+res[0]['comment_id']+","+res[0]['post_id']+')">Ответить</button></li>');
-        $("#text").val('');$("#id_comment").val('');
+                var res = JSON.parse(data);
+                if(res[0]['role']=='ban'){location="/user/logout";}else{
+                $('#'+res[0]['parent_id']+'').append('<li id="'+res[0]['comment_id']+'" >--->'+res[0]['text']+'<br><input type="button" value="Ответить" class="send" onclick="reply('+res[0]['comment_id']+","+res[0]['post_id']+')">\n\
+    <input type="button" value="Удалить" class="delete" onclick="deletec('+res[0]['comment_id']+')"></li>');
+                $('.reset').val(''); pop.close();}
     });        
     }
         
-        
+   function deletec(comment_id){
+   $.post('/crushcomm',{comm:comment_id},function(){
+       $('#'+comment_id+'').hide();
+   });
+   }
    
    
   

@@ -48,7 +48,12 @@ class UserController {
             $password = trim(strip_tags($_POST['password']));
             $errors=FALSE;
             $userId = User::checkUserExists($email, $password);
-           if($userId==FALSE){
+            $userStatus = User::checkUserStatus($email);
+            if($userStatus==TRUE){
+                $errors[]='вы забанены и не можете авторизироваться на этом сайте';
+                header("Location: ");
+            }
+           elseif($userId==FALSE){
                $errors[]='пользователя с такими данными не существует, '.
                        'пройдите регистрацию';
                //header("Location:user/login");

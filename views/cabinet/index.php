@@ -9,6 +9,7 @@
                 <li><a href="/cabinet/edit">Редактировать данные</a></li>
                
             </ul>
-     
+    
+            
 
 <?php include ROOT . '/views/layouts/footer.php'; ?>
