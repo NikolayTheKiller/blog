@@ -62,4 +62,11 @@ class PostController{
             Comments::deleteComment($comm_id);
             return TRUE;
         }
+        
+        
+        public function actionGetuser(){
+            $author = User::checkLogged();
+            echo json_encode($author);
+            return TRUE;
+        }
 }

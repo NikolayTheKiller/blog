@@ -10,3 +10,5 @@
     </tr> 
 <?php endforeach; ?>
 </table>
+<h4>отсортировать по дате</h4>
+<select><option><td><?= $comment['pub_date'];?></option></select></td><td><input type="submit" value="">

@@ -23,6 +23,7 @@ return array(
     'ban/([0-9]+)'=>'adminuser/ban/$1',
     'delete/comment/([0-9]+)'=>'admincomment/delete/$1',
     'crushcomm'=>'post/delete',
+    'tryuser'=>'post/Getuser',
     
    
     'admin' => 'admin/index',
